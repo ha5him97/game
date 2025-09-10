@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    color: #00ffff;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+}
+
+/* Animated Starfield Background */
+.stars, .stars2, .stars3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.stars {
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="white" opacity="0.8"/><circle cx="80" cy="40" r="0.5" fill="white" opacity="0.6"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.9"/><circle cx="90" cy="90" r="0.8" fill="white" opacity="0.7"/><circle cx="10" cy="60" r="0.6" fill="white" opacity="0.5"/><circle cx="60" cy="10" r="1.2" fill="white" opacity="0.8"/><circle cx="30" cy="50" r="0.4" fill="white" opacity="0.6"/><circle cx="70" cy="70" r="0.9" fill="white" opacity="0.7"/></svg>') repeat;
+    animation: move-stars 50s linear infinite;
+}
+
+.stars2 {
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="15" cy="15" r="0.5" fill="cyan" opacity="0.6"/><circle cx="85" cy="35" r="0.8" fill="cyan" opacity="0.4"/><circle cx="35" cy="85" r="1.1" fill="cyan" opacity="0.7"/><circle cx="95" cy="95" r="0.6" fill="cyan" opacity="0.5"/><circle cx="5" cy="65" r="0.7" fill="cyan" opacity="0.3"/><circle cx="65" cy="5" r="0.9" fill="cyan" opacity="0.6"/><circle cx="25" cy="45" r="0.4" fill="cyan" opacity="0.4"/><circle cx="75" cy="75" r="0.8" fill="cyan" opacity="0.5"/></svg>') repeat;
+    animation: move-stars 100s linear infinite;
+}
+
+.stars3 {
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="0.3" fill="white" opacity="0.4"/><circle cx="75" cy="45" r="0.6" fill="white" opacity="0.3"/><circle cx="45" cy="75" r="0.8" fill="white" opacity="0.5"/><circle cx="85" cy="85" r="0.4" fill="white" opacity="0.2"/><circle cx="15" cy="55" r="0.5" fill="white" opacity="0.3"/><circle cx="55" cy="15" r="0.7" fill="white" opacity="0.4"/><circle cx="35" cy="35" r="0.3" fill="white" opacity="0.2"/><circle cx="65" cy="65" r="0.6" fill="white" opacity="0.3"/></svg>') repeat;
+    animation: move-stars 150s linear infinite;
+}
+
+@keyframes move-stars {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-100px); }
+}
+
+/* Game Container */
+.game-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Game Header */
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.game-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+    to { text-shadow: 0 0 30px #00ffff, 0 0 50px #00ffff, 0 0 70px #00ffff; }
+}
+
+.score-board {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.score-board > div {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #00ffff;
+    backdrop-filter: blur(10px);
+    animation: scoreGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes scoreGlow {
+    from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
+    to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+}
+
+/* Game Area */
+.game-area {
+    position: relative;
+    border: 3px solid #00ffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    background: radial-gradient(circle at center, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
+}
+
+#gameCanvas {
+    display: block;
+    background: linear-gradient(180deg, #000011 0%, #000033 100%);
+    border-radius: 12px;
+}
+
+/* Game Over Screen */
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 3px solid #ff0040;
+    box-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
+    display: none;
+    animation: gameOverSlide 0.5s ease-out;
+}
+
+@keyframes gameOverSlide {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.8);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.game-over h2 {
+    color: #ff0040;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #ff0040;
+    animation: gameOverGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes gameOverGlow {
+    from { text-shadow: 0 0 20px #ff0040; }
+    to { text-shadow: 0 0 30px #ff0040, 0 0 40px #ff0040; }
+}
+
+.game-over p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: #00ffff;
+}
+
+#restartBtn {
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #000;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#restartBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    animation: buttonPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes buttonPulse {
+    from { transform: scale(1.1); }
+    to { transform: scale(1.15); }
+}
+
+/* Controls */
+.controls {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.control-info {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #00ffff;
+    backdrop-filter: blur(10px);
+    max-width: 500px;
+}
+
+.control-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #00ffff;
+}
+
+.control-info strong {
+    color: #ffffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+/* Particles */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Mobile Touch Controls */
+.mobile-controls {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.d-pad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.d-pad-row {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.d-pad-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 3px solid #00ffff;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffff;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.d-pad-btn:active {
+    background: rgba(0, 255, 255, 0.4);
+    transform: scale(0.95);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+}
+
+.d-pad-center {
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.action-btn {
+    padding: 15px 25px;
+    background: rgba(255, 0, 64, 0.2);
+    border: 3px solid #ff0040;
+    border-radius: 25px;
+    color: #ff0040;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(255, 0, 64, 0.3);
+    text-align: center;
+    min-width: 80px;
+}
+
+.action-btn:active {
+    background: rgba(255, 0, 64, 0.4);
+    transform: scale(0.95);
+    box-shadow: 0 0 25px rgba(255, 0, 64, 0.6);
+}
+
+/* Show mobile controls on mobile devices */
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: block;
+    }
+    
+    .controls {
+        display: none;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .score-board {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .score-board > div {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+    
+    #gameCanvas {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+    
+    .control-info {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+    
+    .game-over {
+        padding: 20px;
+        margin: 0 20px;
+    }
+    
+    .game-over h2 {
+        font-size: 2rem;
+    }
+    
+    .game-over p {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    
+    .score-board > div {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .control-info {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+    
+    .game-over h2 {
+        font-size: 1.8rem;
+    }
+    
+    .game-over p {
+        font-size: 1rem;
+    }
+    
+    #restartBtn {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.game-container > * {
+    animation: fadeIn 1s ease-out;
+}
+
+.game-container > *:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.game-container > *:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.game-container > *:nth-child(4) {
+    animation-delay: 0.6s;
+}
