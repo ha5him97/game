@@ -3,67 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Shooter - Impress Your Dad!</title>
+    <title>Galaxy Raider</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="stars2"></div>
-    <div class="stars3"></div>
-    
     <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">SPACE DEFENDER</h1>
-            <div class="score-board">
-                <div class="score">Score: <span id="score">0</span></div>
-                <div class="lives">Lives: <span id="lives">3</span></div>
-                <div class="level">Level: <span id="level">1</span></div>
-            </div>
+        <div class="score-board">
+            <div id="score">Score: 0</div>
+            <div id="lives">Lives: 3</div>
         </div>
-        
-        <div class="game-area">
-            <canvas id="gameCanvas" width="800" height="600"></canvas>
-            <div class="game-over" id="gameOver">
-                <h2>GAME OVER</h2>
-                <p>Final Score: <span id="finalScore">0</span></p>
-                <button id="restartBtn">Play Again</button>
-            </div>
-        </div>
-        
+        <canvas id="gameCanvas"></canvas>
         <div class="controls">
-            <div class="control-info">
-                <p><strong>Controls:</strong></p>
-                <p>WASD or Arrow Keys - Move</p>
-                <p>SPACE - Shoot</p>
-                <p>P - Pause</p>
-            </div>
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="restartBtn">Restart</button>
         </div>
-        
-        <!-- Mobile Touch Controls -->
-        <div class="mobile-controls" id="mobileControls">
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls">
             <div class="d-pad">
                 <div class="d-pad-row">
-                    <div class="d-pad-btn" id="upBtn">↑</div>
+                    <button class="d-pad-btn" id="upBtn">▲</button>
                 </div>
                 <div class="d-pad-row">
-                    <div class="d-pad-btn" id="leftBtn">←</div>
+                    <button class="d-pad-btn" id="leftBtn">◀</button>
                     <div class="d-pad-center"></div>
-                    <div class="d-pad-btn" id="rightBtn">→</div>
+                    <button class="d-pad-btn" id="rightBtn">▶</button>
                 </div>
                 <div class="d-pad-row">
-                    <div class="d-pad-btn" id="downBtn">↓</div>
+                    <button class="d-pad-btn" id="downBtn">▼</button>
                 </div>
             </div>
             <div class="action-buttons">
-                <div class="action-btn" id="shootBtn">SHOOT</div>
-                <div class="action-btn" id="pauseBtn">PAUSE</div>
+                <button class="action-btn" id="shootBtn">Shoot</button>
             </div>
         </div>
     </div>
-    
-    <div class="particles" id="particles"></div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
