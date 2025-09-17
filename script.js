@@ -520,3 +520,69 @@ function resizeCanvas() {
 
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+// existing code above…
+
+resizeCanvas();
+
+// --- Mobile touch controls on canvas: swipe to move, tap to fire ---
+(function addCanvasTouchControls(){
+    let touchStartX = 0, touchStartTime = 0;
+    let isDragging = false;
+
+    function getTouchPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches ? e.touches[0] : e;
+        return {
+            x: (t.clientX - rect.left) * (canvas.width / rect.width),
+            y: (t.clientY - rect.top) * (canvas.height / rect.height)
+        };
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+        const p = getTouchPos(e);
+        touchStartX = p.x;
+        touchStartTime = Date.now();
+        isDragging = true;
+        e.preventDefault();
+    }, {passive:false});
+
+    canvas.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const p = getTouchPos(e);
+        if (typeof gamePlayer !== 'undefined') {
+            gamePlayer.x = Math.max(0, Math.min(canvas.width - gamePlayer.width, p.x - gamePlayer.width/2));
+        }
+        e.preventDefault();
+    }, {passive:false});
+
+    canvas.addEventListener('touchend', (e) => {
+        const touchDuration = Date.now() - touchStartTime;
+        if (touchDuration < 300) {
+            if (typeof gamePlayer !== 'undefined' && gameState.gameRunning && !gameState.paused) {
+                gamePlayer.shoot();
+            }
+        }
+        isDragging = false;
+        e.preventDefault();
+    }, {passive:false});
+})();
+
+// Ensure shoot button fires
+(function bindShootButton(){
+    const shootBtn = document.getElementById('shootBtn');
+    if (!shootBtn) return;
+
+    shootBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (typeof gamePlayer !== 'undefined' && gameState.gameRunning && !gameState.paused) {
+            gamePlayer.shoot();
+        }
+    }, {passive:false});
+
+    shootBtn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        if (typeof gamePlayer !== 'undefined' && gameState.gameRunning && !gameState.paused) {
+            gamePlayer.shoot();
+        }
+    });
+})();
